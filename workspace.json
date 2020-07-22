@@ -1,8 +1,113 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "nexter": {
+      "root": "apps/nexter",
+      "sourceRoot": "apps/nexter/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/web:build",
+          "options": {
+            "outputPath": "dist/apps/nexter",
+            "index": "apps/nexter/src/index.html",
+            "main": "apps/nexter/src/main.ts",
+            "polyfills": "apps/nexter/src/polyfills.ts",
+            "tsConfig": "apps/nexter/tsconfig.app.json",
+            "assets": ["apps/nexter/src/favicon.ico", "apps/nexter/src/assets"],
+            "styles": ["apps/nexter/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nexter/src/environments/environment.ts",
+                  "with": "apps/nexter/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "nexter:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "nexter:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "apps/nexter/tsconfig.app.json",
+              "apps/nexter/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/nexter/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/nexter/jest.config.js",
+            "tsConfig": "apps/nexter/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/nexter/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "nexter-e2e": {
+      "root": "apps/nexter-e2e",
+      "sourceRoot": "apps/nexter-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/nexter-e2e/cypress.json",
+            "tsConfig": "apps/nexter-e2e/tsconfig.e2e.json",
+            "devServerTarget": "nexter:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "nexter:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["apps/nexter-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/nexter-e2e/**/*"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/node"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -62,5 +167,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "mailnode"
 }
